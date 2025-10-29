@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pregnancy Kit - Ultimate Digital Pregnancy Planner & Guide</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Sticky Header -->
+    <header class="header" id="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="header-left">
+                    <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Toggle navigation menu">
+                        <span class="menu-icon">☰</span>
+                        <span class="close-icon">✕</span>
+                    </button>
+                    <a href="index.html" class="logo" aria-label="Pregnancy Kit">
+                        <span class="logo-text">Pregnancy Kit</span>
+                    </a>
+                </div>
+                <div class="header-right">
+                    <nav class="nav" aria-label="Primary" id="mainNav">
+                        <a href="#journey">Journey</a>
+                        <a href="#included">Included</a>
+                        <a href="#testimonials">Reviews</a>
+                        <a href="products.html">Shop Essentials</a>
+                    </nav>
+                    <button class="cta-button" onclick="scrollToCheckout()">Get Your Bundle Now</button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section with Large Image -->
+    <section class="hero-main">
+        <div class="hero-main-content">
+            <div class="hero-main-image">
+                <img src="Media/Woman-holding-ebook.png" alt="Pregnant woman with tablet viewing pregnancy planner" />
+            </div>
+            <div class="hero-main-overlay">
+                <h1 class="hero-main-title">Organize Your Pregnancy Journey</h1>
+                <button class="cta-button-hero" onclick="scrollToCheckout()">GET STARTED NOW</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Bundle Offer Section -->
+    <section class="bundle-offer-section">
+        <div class="container">
+            <div class="bundle-offer-grid">
+                <div class="bundle-offer-image">
+                    <!-- Placeholder for product bundle mockup -->
+                    <div class="image-placeholder">
+                        <div class="placeholder-content">
+                            <span class="placeholder-icon">🎁</span>
+                            <p>Bundle product mockup<br/>(laptop + eBook + phone)</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="bundle-offer-content">
+                    <div class="bundle-offer-tag">BRAND NEW</div>
+                    <h2 class="bundle-offer-title">THE ULTIMATE PREGNANCY KIT BUNDLE</h2>
+                    <p class="bundle-offer-description">The complete solution for a well-organized, stress-free pregnancy journey. Everything you need in one affordable digital bundle.</p>
+                    
+                    <div class="bundle-offer-features">
+                        <div class="offer-feature">✓ Ultimate Pregnancy Planner (11 Tabs)</div>
+                        <div class="offer-feature">✓ Pregnancy Made Simple eBook Guide</div>
+                        <div class="offer-feature">✓ FREE Bonus Habit Tracker</div>
+                        <div class="offer-feature">✓ Instant Digital Download</div>
+                        <div class="offer-feature">✓ Lifetime Access & Updates</div>
+                    </div>
+                    
+                    <div class="bundle-offer-pricing">
+                        <span class="bundle-price">$14.99</span>
+                        <span class="bundle-value">(Save $2.99 with bundle!)</span>
+                    </div>
+                    
+                    <button class="cta-button-large" onclick="scrollToCheckout()">GET YOUR BUNDLE NOW</button>
+                    
+                    <p class="bundle-offer-note">Try it now with <strong>FREE SHIPPING</strong> • Instant access • Lifetime updates</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Feature Section 1: Quick, Easy, Effective (Image Left, Text Right) -->
+    <section class="feature-section feature-alt">
+        <div class="container">
+            <div class="feature-grid">
+                <div class="feature-image">
+                    <!-- Placeholder for: Woman using tablet with planner in warm setting -->
+                    <div class="image-placeholder">
+                        <div class="placeholder-content">
+                            <span class="placeholder-icon">🤰</span>
+                            <p>Woman relaxing with<br/>pregnancy planner on tablet</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="feature-text">
+                    <div class="section-tag">Quick, Easy, Effective</div>
+                    <h2 class="feature-title">Ultimate Pregnancy Planner</h2>
+                    <p class="feature-description">Stay organized throughout your pregnancy with our comprehensive Google Sheets planner. Track appointments, plan your nursery, and prepare for your baby's arrival—all in one place.</p>
+                    <ul class="feature-list">
+                        <li>✓ 11 Essential Planning Tabs</li>
+                        <li>✓ Access from any device</li>
+                        <li>✓ Fully customizable</li>
+                        <li>✓ Lifetime updates included</li>
+                    </ul>
+                    <button class="cta-button-secondary" onclick="scrollToCheckout()">EXPLORE NOW</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Product Carousel Section -->
+    <section class="product-carousel-section">
+        <div class="container">
+            <h2 class="section-title">See What's Inside</h2>
+            <p class="section-subtitle">Swipe through to explore your complete pregnancy toolkit</p>
+            
+            <div class="product-carousel">
+                <div class="carousel-container">
+                    <div class="carousel-track" id="carouselTrack">
+                        <!-- Slide 1: Video -->
+                        <div class="carousel-slide active">
+                            <div class="slide-content">
+                                <video class="carousel-video" autoplay muted loop playsinline preload="metadata">
+                                    <source src="your-video.mp4" type="video/mp4">
+                                    <div class="video-placeholder">
+                                        <div class="placeholder-content">
+                                            <span class="placeholder-icon">🎥</span>
+                                            <p>Product walkthrough video</p>
+                                        </div>
+                                    </div>
+                                </video>
+                            </div>
+                        </div>
+                        
+                        <!-- Slide 2: Planner Overview -->
+                        <div class="carousel-slide">
+                            <div class="slide-content">
+                                <img src="Media/Main-Overview.svg" alt="Ultimate Pregnancy Planner Overview" />
+                            </div>
+                        </div>
+                        
+                        <!-- Slide 3: Laptop Mockup -->
+                        <div class="carousel-slide">
+                            <div class="slide-content">
+                                <!-- Placeholder for laptop mockup -->
+                                <div class="image-placeholder">
+                                    <div class="placeholder-content">
+                                        <span class="placeholder-icon">💻</span>
+                                        <p>Laptop with pregnancy<br/>planner displayed</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Slide 4: eBook Main -->
+                        <div class="carousel-slide">
+                            <div class="slide-content">
+                                <img src="Media/ebook-main.png" alt="Pregnancy Made Simple eBook" />
+                            </div>
+                        </div>
+                        
+                        <!-- Slide 5: Tablet Mockup -->
+                        <div class="carousel-slide">
+                            <div class="slide-content">
+                                <!-- Placeholder for tablet mockup -->
+                                <div class="image-placeholder">
+                                    <div class="placeholder-content">
+                                        <span class="placeholder-icon">📱</span>
+                                        <p>Tablet displaying<br/>pregnancy tracker</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Slide 6: eBook Contents -->
+                        <div class="carousel-slide">
+                            <div class="slide-content">
+                                <img src="Media/ebook-contents.png" alt="eBook Contents & Bonus" />
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Navigation -->
+                    <button class="carousel-nav carousel-prev" id="carouselPrev" aria-label="Previous">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                            <path d="M15 18L9 12L15 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                    </button>
+                    <button class="carousel-nav carousel-next" id="carouselNext" aria-label="Next">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                            <path d="M9 18L15 12L9 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                    </button>
+                    
+                    <!-- Dots -->
+                    <div class="carousel-dots" id="carouselDots"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Feature Section 2: Complete eBook (Image Right, Text Left) -->
+    <section class="feature-section">
+        <div class="container">
+            <div class="feature-grid feature-reverse">
+                <div class="feature-text">
+                    <div class="section-tag">Complete Pregnancy Guide</div>
+                    <h2 class="feature-title">Pregnancy Made Simple eBook</h2>
+                    <p class="feature-description">Navigate every week of pregnancy with confidence using our comprehensive guide. Expert advice, trimester breakdowns, and essential tips—all in one beautifully designed eBook.</p>
+                    <ul class="feature-list">
+                        <li>✓ Trimester-by-trimester guidance</li>
+                        <li>✓ Expert tips & advice</li>
+                        <li>✓ Labor & delivery preparation</li>
+                        <li>✓ Instant PDF download</li>
+                    </ul>
+                    <button class="cta-button-secondary" onclick="scrollToCheckout()">GET YOUR GUIDE</button>
+                </div>
+                <div class="feature-image">
+                    <!-- Placeholder for: Phone/tablet with eBook displayed -->
+                    <div class="image-placeholder">
+                        <div class="placeholder-content">
+                            <span class="placeholder-icon">📚</span>
+                            <p>eBook displayed on<br/>phone or tablet</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- What's Included Grid Section -->
+    <section class="included-section" id="included">
+        <div class="container">
+            <h2 class="section-title">Everything You Need in One Bundle</h2>
+            <p class="section-subtitle">Comprehensive digital tools to support your entire pregnancy journey</p>
+            
+            <div class="included-grid">
+                <!-- Item 1: 11 Planning Tabs -->
+                <div class="included-card">
+                    <div class="included-image">
+                        <!-- Placeholder -->
+                        <div class="image-placeholder">
+                            <div class="placeholder-content">
+                                <span class="placeholder-icon">📋</span>
+                                <p>Planner tabs preview</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="included-content">
+                        <h3>11 Essential Planning Tabs</h3>
+                        <p>Track every aspect of your pregnancy from checklists to meal planning, all organized by trimester.</p>
+                    </div>
+                </div>
+                
+                <!-- Item 2: Medical Tracking -->
+                <div class="included-card">
+                    <div class="included-image">
+                        <div class="image-placeholder">
+                            <div class="placeholder-content">
+                                <span class="placeholder-icon">🏥</span>
+                                <p>Medical log example</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="included-content">
+                        <h3>Medical Appointments Log</h3>
+                        <p>Never miss an appointment with our comprehensive medical tracking system.</p>
+                    </div>
+                </div>
+                
+                <!-- Item 3: Baby Names -->
+                <div class="included-card">
+                    <div class="included-image">
+                        <div class="image-placeholder">
+                            <div class="placeholder-content">
+                                <span class="placeholder-icon">👶</span>
+                                <p>Baby names planner</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="included-content">
+                        <h3>Baby Names Planner</h3>
+                        <p>Compare and organize your favorite baby names with meanings and notes.</p>
+                    </div>
+                </div>
+                
+                <!-- Item 4: Hospital Prep -->
+                <div class="included-card">
+                    <div class="included-image">
+                        <div class="image-placeholder">
+                            <div class="placeholder-content">
+                                <span class="placeholder-icon">🏥</span>
+                                <p>Hospital bag checklist</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="included-content">
+                        <h3>Hospital & Diaper Bag Checklists</h3>
+                        <p>Be prepared for the big day with our complete packing lists.</p>
+                    </div>
+                </div>
+                
+                <!-- Item 5: eBook Guide -->
+                <div class="included-card">
+                    <div class="included-image">
+                        <div class="image-placeholder">
+                            <div class="placeholder-content">
+                                <span class="placeholder-icon">📖</span>
+                                <p>eBook guide pages</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="included-content">
+                        <h3>Complete Pregnancy eBook</h3>
+                        <p>Expert guidance for every week, from conception to postpartum recovery.</p>
+                    </div>
+                </div>
+                
+                <!-- Item 6: Habit Tracker -->
+                <div class="included-card">
+                    <div class="included-image">
+                        <div class="image-placeholder">
+                            <div class="placeholder-content">
+                                <span class="placeholder-icon">✅</span>
+                                <p>Habit tracker bonus</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="included-content">
+                        <h3>FREE Bonus Habit Tracker</h3>
+                        <p>Build healthy pregnancy habits with our beautiful tracking system.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Journey Timeline Section -->
+    <section class="journey-section" id="journey">
+        <div class="container">
+            <h2 class="section-title">Your Pregnancy Journey, Organized</h2>
+            <p class="section-subtitle">Tools designed for each stage of your pregnancy</p>
+            
+            <div class="journey-grid">
+                <!-- First Trimester -->
+                <div class="journey-card">
+                    <div class="journey-image">
+                        <!-- Placeholder -->
+                        <div class="image-placeholder">
+                            <div class="placeholder-content">
+                                <span class="placeholder-icon">🌸</span>
+                                <p>First trimester image</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="journey-content">
+                        <h3>First Trimester</h3>
+                        <p class="journey-weeks">Weeks 1-12</p>
+                        <p class="journey-description">The beginning of your beautiful journey. Track early symptoms and appointments.</p>
+                        <ul class="journey-features">
+                            <li>✓ Pregnancy Checklist</li>
+                            <li>✓ Medical Appointments Log</li>
+                            <li>✓ Baby Names Planner</li>
+                            <li>✓ Baby Essentials Checklist</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- Second Trimester -->
+                <div class="journey-card">
+                    <div class="journey-image">
+                        <div class="image-placeholder">
+                            <div class="placeholder-content">
+                                <span class="placeholder-icon">🌺</span>
+                                <p>Second trimester image</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="journey-content">
+                        <h3>Second Trimester</h3>
+                        <p class="journey-weeks">Weeks 13-26</p>
+                        <p class="journey-description">The honeymoon phase! Plan your nursery and prepare for what's ahead.</p>
+                        <ul class="journey-features">
+                            <li>✓ Hospital Bag Checklist</li>
+                            <li>✓ Diaper Bag Checklist</li>
+                            <li>✓ Baby Sleeping Log</li>
+                            <li>✓ Baby Meal Planner</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- Third Trimester -->
+                <div class="journey-card">
+                    <div class="journey-image">
+                        <div class="image-placeholder">
+                            <div class="placeholder-content">
+                                <span class="placeholder-icon">🌼</span>
+                                <p>Third trimester image</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="journey-content">
+                        <h3>Third Trimester</h3>
+                        <p class="journey-weeks">Weeks 27-40+</p>
+                        <p class="journey-description">The final countdown! Get ready to meet your little one.</p>
+                        <ul class="journey-features">
+                            <li>✓ Before Birth Checklist</li>
+                            <li>✓ Postpartum Checklist</li>
+                            <li>✓ FREE Bonus: Habit Tracker</li>
+                            <li>✓ Complete organization system</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Downsell Section -->
+    <section class="downsell-section">
+        <div class="container">
+            <h2 class="section-title">Prefer Individual Products?</h2>
+            <p class="section-subtitle">Choose what you need most for your pregnancy journey</p>
+            
+            <div class="downsell-grid">
+                <!-- Planner Only -->
+                <div class="downsell-card">
+                    <div class="downsell-header">
+                        <span class="downsell-icon">📋</span>
+                        <h3>Ultimate Pregnancy Planner</h3>
+                        <p class="downsell-description">Complete Google Sheets planner with 11 essential tabs</p>
+                    </div>
+                    <div class="downsell-features">
+                        <div class="downsell-feature">✓ All 11 planning tabs</div>
+                        <div class="downsell-feature">✓ Editable Google Sheets</div>
+                        <div class="downsell-feature">✓ Access from any device</div>
+                        <div class="downsell-feature">✓ Lifetime updates</div>
+                    </div>
+                    <div class="downsell-pricing">
+                        <span class="downsell-price">$9.99</span>
+                        <span class="downsell-save">Save $5 with bundle</span>
+                    </div>
+                    <button class="downsell-button">Get Planner Only</button>
+                </div>
+                
+                <!-- eBook Only -->
+                <div class="downsell-card">
+                    <div class="downsell-header">
+                        <span class="downsell-icon">📚</span>
+                        <h3>Pregnancy Made Simple</h3>
+                        <p class="downsell-description">Complete pregnancy guide eBook with expert insights</p>
+                    </div>
+                    <div class="downsell-features">
+                        <div class="downsell-feature">✓ Trimester-by-trimester guide</div>
+                        <div class="downsell-feature">✓ Expert tips & advice</div>
+                        <div class="downsell-feature">✓ Labor & delivery prep</div>
+                        <div class="downsell-feature">✓ Instant PDF download</div>
+                    </div>
+                    <div class="downsell-pricing">
+                        <span class="downsell-price">$7.99</span>
+                        <span class="downsell-save">Save $3 with bundle</span>
+                    </div>
+                    <button class="downsell-button">Get eBook Only</button>
+                </div>
+            </div>
+            
+            <!-- Bundle Reminder -->
+            <div class="bundle-reminder">
+                <span class="bundle-reminder-icon">💝</span>
+                <div class="bundle-reminder-text">
+                    <h4>Best Value: Complete Bundle</h4>
+                    <p>Get both products + FREE Habit Tracker for just $14.99 (Save $2.99!)</p>
+                </div>
+                <button class="bundle-reminder-button" onclick="scrollToCheckout()">Get Bundle Deal</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="testimonials-section" id="testimonials">
+        <div class="container">
+            <h2 class="section-title">What Mamas Are Saying</h2>
+            <p class="section-subtitle">Join thousands of organized, confident moms-to-be</p>
+            
+            <div class="testimonials-grid">
+                <div class="testimonial-card">
+                    <div class="testimonial-rating">⭐⭐⭐⭐⭐</div>
+                    <p class="testimonial-text">"This planner has been a lifesaver! Everything I need in one place. The eBook answered so many questions I had about each trimester."</p>
+                    <p class="testimonial-author">— Sarah M.</p>
+                </div>
+                
+                <div class="testimonial-card">
+                    <div class="testimonial-rating">⭐⭐⭐⭐⭐</div>
+                    <p class="testimonial-text">"I love how organized this makes me feel. The hospital bag checklist was especially helpful—I didn't forget a thing!"</p>
+                    <p class="testimonial-author">— Jessica L.</p>
+                </div>
+                
+                <div class="testimonial-card">
+                    <div class="testimonial-rating">⭐⭐⭐⭐⭐</div>
+                    <p class="testimonial-text">"Best pregnancy purchase I made. The Google Sheets format means I can access it on my phone, tablet, or computer. So convenient!"</p>
+                    <p class="testimonial-author">— Emily R.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="faq-section" id="faq">
+        <div class="container">
+            <h2 class="section-title">Frequently Asked Questions</h2>
+            <p class="section-subtitle">Everything you need to know about your Pregnancy Kit</p>
+            
+            <div class="faq-container">
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h3>What exactly do I get with the Ultimate Pregnancy Planner?</h3>
+                        <span class="faq-toggle">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>You get a comprehensive Google Sheets planner with 11 essential tabs: Pregnancy Checklist, Baby Names Planner, Medical Appointments Log, Baby Essentials Checklist, Hospital Bag Checklist, Diaper Bag Checklist, Before Birth Checklist, Postpartum Checklist, Baby Sleeping Log, Baby Meal Planner, plus a FREE Bonus Habit Tracker.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h3>How do I access my purchase after buying?</h3>
+                        <span class="faq-toggle">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>After purchase, you'll receive an instant email with download links to both your Google Sheets planner and the Pregnancy Made Simple eBook. You can access them immediately and use them on any device.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h3>Can I edit and customize the planner?</h3>
+                        <span class="faq-toggle">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Yes! The Google Sheets planner is fully editable. You can customize it to fit your specific needs, add your own sections, change colors, and make it truly yours.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h3>Do I need any special software to use the planner?</h3>
+                        <span class="faq-toggle">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>No special software needed! You can use Google Sheets (free), Microsoft Excel, or any spreadsheet application. It works on computers, tablets, and smartphones.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h3>Can I get support if I have questions?</h3>
+                        <span class="faq-toggle">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Absolutely! Contact us anytime at <a href="mailto:pregnancykit.team@gmail.com">pregnancykit.team@gmail.com</a> and we'll be happy to help you with any questions about your pregnancy planning journey.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Final CTA Section -->
+    <section class="final-cta-section" id="checkout">
+        <div class="container">
+            <div class="final-cta-content">
+                <h2 class="final-cta-title">Ready to Get Your Complete Pregnancy Kit?</h2>
+                <p class="final-cta-description">Get instant access to the Ultimate Pregnancy Planner (11 tabs), Pregnancy Made Simple eBook, and bonus habit tracker</p>
+                
+                <div class="final-cta-price">
+                    <span class="price-label">Complete Bundle</span>
+                    <span class="price-amount">$14.99</span>
+                </div>
+                
+                <div class="final-cta-features">
+                    <div class="cta-feature">✓ Ultimate Pregnancy Planner (11 Essential Tabs)</div>
+                    <div class="cta-feature">✓ Pregnancy Made Simple eBook Guide</div>
+                    <div class="cta-feature">✓ FREE Bonus Habit Tracker</div>
+                    <div class="cta-feature">✓ Instant Digital Download</div>
+                    <div class="cta-feature">✓ Lifetime Access & Updates</div>
+                </div>
+
+                <a href="https://pregnancykit.lemonsqueezy.com/buy/ab60b65b-0a93-4ace-a6fc-74243bafe0fe?logo=0" class="lemonsqueezy-button cta-button-final">Get Instant Access Now</a>
+                
+                <div class="trust-badges">
+                    <span class="trust-badge-item">🔒 Secure Checkout</span>
+                    <span class="trust-badge-item">📧 Instant Delivery</span>
+                    <span class="trust-badge-item">💝 Lifetime Access</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>Pregnancy Kit</h4>
+                    <p>Your complete digital pregnancy planning solution. Stay organized, informed, and confident throughout your journey to motherhood.</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <a href="#journey">Your Journey</a>
+                    <a href="#included">What's Included</a>
+                    <a href="#testimonials">Testimonials</a>
+                    <a href="products.html">Shop Essentials</a>
+                </div>
+                <div class="footer-section">
+                    <h4>Support</h4>
+                    <a href="mailto:pregnancykit.team@gmail.com">Contact Us</a>
+                    <a href="#faq">FAQ</a>
+                    <p style="color: rgba(255, 255, 255, 0.8); font-size: 0.9rem; margin-top: 10px;">
+                        Email: pregnancykit.team@gmail.com
+                    </p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Pregnancy Kit. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script src="https://assets.lemonsqueezy.com/lemon.js" defer></script>
+</body>
+</html>
+
