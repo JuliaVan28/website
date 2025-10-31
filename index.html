@@ -40,7 +40,7 @@
     <section class="hero-main">
         <div class="hero-main-content">
             <div class="hero-main-image">
-                <img src="Media/Woman-holding-ebook.webp" alt="Pregnant woman with tablet viewing pregnancy planner" />
+                <img src="Media/Woman-holding-ebook.webp" alt="Pregnant woman with tablet viewing pregnancy planner" onerror="this.src='/Media/Woman-holding-ebook.webp'" />
             </div>
             <div class="hero-main-overlay">
                 <h1 class="hero-main-title">Organize Your Pregnancy Journey</h1>
@@ -54,7 +54,7 @@
         <div class="container">
             <div class="bundle-offer-grid">
                 <div class="bundle-offer-image">
-                    <img src="Media/Ultimate-pregnancy-kit-main.webp" alt="Ultimate Pregnancy Kit Bundle - Complete Digital Planner and eBook" />
+                    <img src="Media/Ultimate-pregnancy-kit-main.webp" alt="Ultimate Pregnancy Kit Bundle - Complete Digital Planner and eBook" onerror="this.src='/Media/Ultimate-pregnancy-kit-main.webp'" />
                 </div>
                 <div class="bundle-offer-content">
                     <div class="bundle-offer-tag">BRAND NEW</div>
@@ -94,8 +94,8 @@
                         <!-- Slide 1: Pregnancy Planner Video -->
                         <div class="carousel-slide active">
                             <div class="slide-content">
-                                <video class="carousel-video" autoplay muted loop playsinline preload="metadata">
-                                    <source src="Media/Pregnancy Planner Recording.mov" type="video/mp4">
+                                <video class="carousel-video" autoplay muted loop playsinline preload="metadata" data-video-index="0">
+                                    <source src="Media/Pregnancy%20Planner%20Recording.mov" type="video/quicktime">
                                     Your browser does not support the video tag.
                                 </video>
                             </div>
@@ -104,8 +104,8 @@
                         <!-- Slide 2: eBook Video -->
                         <div class="carousel-slide">
                             <div class="slide-content">
-                                <video class="carousel-video" autoplay muted loop playsinline preload="metadata">
-                                    <source src="Media/Ebook Recording.mp4" type="video/mp4">
+                                <video class="carousel-video" autoplay muted loop playsinline preload="metadata" data-video-index="1">
+                                    <source src="Media/Ebook%20Recording.mp4" type="video/mp4">
                                     Your browser does not support the video tag.
                                 </video>
                             </div>
@@ -587,6 +587,33 @@
 
     <script src="script.js"></script>
     <script src="https://assets.lemonsqueezy.com/lemon.js" defer></script>
+    <script>
+        // Diagnostic script to help identify issues on public server
+        window.addEventListener('load', () => {
+            // Check if CSS loaded
+            const stylesheets = Array.from(document.styleSheets);
+            const cssLoaded = stylesheets.some(sheet => {
+                try {
+                    return sheet.cssRules && sheet.cssRules.length > 0;
+                } catch(e) {
+                    return true; // Cross-origin stylesheet
+                }
+            });
+            if (!cssLoaded && stylesheets.length === 0) {
+                console.warn('⚠️ CSS file may not have loaded. Check if styles.css exists and path is correct.');
+            }
+            
+            // Check video files
+            const videos = document.querySelectorAll('.carousel-video');
+            videos.forEach((video, index) => {
+                video.addEventListener('error', () => {
+                    console.error(`❌ Video ${index + 1} failed to load. Check file path and format.`);
+                });
+                video.addEventListener('loadeddata', () => {
+                    console.log(`✅ Video ${index + 1} loaded successfully`);
+                });
+            });
+        });
+    </script>
 </body>
 </html>
-

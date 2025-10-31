@@ -206,6 +206,18 @@ class Carousel {
         const currentSlideVideo = this.slides[this.currentSlide].querySelector('.carousel-video');
         
         if (currentSlideVideo) {
+            // Add error handling for video loading issues
+            currentSlideVideo.addEventListener('error', (e) => {
+                console.error('Video loading error:', {
+                    videoIndex: currentSlideVideo.getAttribute('data-video-index'),
+                    error: e,
+                    sources: Array.from(currentSlideVideo.querySelectorAll('source')).map(s => ({
+                        src: s.src,
+                        type: s.type
+                    }))
+                });
+            }, { once: true });
+            
             // Ensure video is loaded and ready
             if (currentSlideVideo.readyState >= 2) {
                 // Video has enough data to play
@@ -214,14 +226,25 @@ class Carousel {
                 });
             } else {
                 // Wait for video to load enough data
-                currentSlideVideo.addEventListener('loadeddata', () => {
+                const playWhenReady = () => {
                     currentSlideVideo.play().catch((error) => {
                         console.log('Video autoplay prevented:', error);
                     });
-                }, { once: true });
+                };
                 
-                // Load the video
-                currentSlideVideo.load();
+                if (currentSlideVideo.readyState >= 1) {
+                    // Video has metadata, try playing
+                    playWhenReady();
+                } else {
+                    // Wait for video to load enough data
+                    currentSlideVideo.addEventListener('loadeddata', playWhenReady, { once: true });
+                    currentSlideVideo.addEventListener('canplay', playWhenReady, { once: true });
+                    
+                    // Load the video if not already loading
+                    if (currentSlideVideo.readyState === 0) {
+                        currentSlideVideo.load();
+                    }
+                }
             }
         }
     }
