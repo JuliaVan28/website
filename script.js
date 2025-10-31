@@ -120,7 +120,7 @@ class Carousel {
         this.prevBtn = document.getElementById('carouselPrev');
         this.nextBtn = document.getElementById('carouselNext');
         this.dots = document.querySelectorAll('.carousel-dot');
-        this.video = document.querySelector('.carousel-video');
+        this.videos = document.querySelectorAll('.carousel-video');
         
         this.currentSlide = 0;
         this.totalSlides = this.slides.length;
@@ -129,6 +129,9 @@ class Carousel {
     }
     
     init() {
+        // Generate dots dynamically
+        this.generateDots();
+        
         // Event listeners
         this.prevBtn.addEventListener('click', () => this.prevSlide());
         this.nextBtn.addEventListener('click', () => this.nextSlide());
@@ -147,10 +150,31 @@ class Carousel {
         this.addKeyboardSupport();
     }
     
+    generateDots() {
+        const dotsContainer = document.getElementById('carouselDots');
+        if (dotsContainer) {
+            dotsContainer.innerHTML = '';
+            for (let i = 0; i < this.totalSlides; i++) {
+                const dot = document.createElement('button');
+                dot.className = `carousel-dot ${i === 0 ? 'active' : ''}`;
+                dot.setAttribute('aria-label', `Go to slide ${i + 1}`);
+                dotsContainer.appendChild(dot);
+            }
+            // Update dots reference
+            this.dots = document.querySelectorAll('.carousel-dot');
+        }
+    }
+    
     goToSlide(slideIndex) {
         this.currentSlide = slideIndex;
-        const translateX = -slideIndex * 25; // 25% per slide
+        const slideWidth = 100 / this.totalSlides; // Dynamic slide width
+        const translateX = -slideIndex * slideWidth;
         this.track.style.transform = `translateX(${translateX}%)`;
+        
+        // Update active class on slides (critical for opacity visibility)
+        this.slides.forEach((slide, index) => {
+            slide.classList.toggle('active', index === slideIndex);
+        });
         
         // Update dots
         this.dots.forEach((dot, index) => {
@@ -172,16 +196,32 @@ class Carousel {
     }
     
     handleVideoAutoplay() {
-        if (this.video) {
-            if (this.currentSlide === 0) {
-                // First slide has video - play it
-                this.video.play().catch(() => {
-                    // Autoplay failed, user interaction required
-                    console.log('Video autoplay prevented by browser');
+        // Pause all videos first
+        this.videos.forEach(video => {
+            video.pause();
+            video.currentTime = 0; // Reset to beginning
+        });
+        
+        // Play video on current slide if it exists
+        const currentSlideVideo = this.slides[this.currentSlide].querySelector('.carousel-video');
+        
+        if (currentSlideVideo) {
+            // Ensure video is loaded and ready
+            if (currentSlideVideo.readyState >= 2) {
+                // Video has enough data to play
+                currentSlideVideo.play().catch((error) => {
+                    console.log('Video autoplay prevented:', error);
                 });
             } else {
-                // Not on video slide - pause it
-                this.video.pause();
+                // Wait for video to load enough data
+                currentSlideVideo.addEventListener('loadeddata', () => {
+                    currentSlideVideo.play().catch((error) => {
+                        console.log('Video autoplay prevented:', error);
+                    });
+                }, { once: true });
+                
+                // Load the video
+                currentSlideVideo.load();
             }
         }
     }
