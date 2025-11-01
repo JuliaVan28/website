@@ -388,13 +388,15 @@ body {
     position: absolute;
     top: 0;
     left: 0;
-    width: 200%;
+    width: 400%;
     height: 100%;
     display: flex;
+    transform: translateX(0%);
+    transition: transform 0.5s ease;
 }
 
 .carousel-slide {
-    width: calc(100% / 2);
+    width: calc(100% / 4);
     height: 100%;
     flex-shrink: 0;
     opacity: 0;
@@ -416,7 +418,8 @@ body {
 .slide-content img {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: contain;
+    background: #fafafa;
 }
 
 .carousel-video {
@@ -512,30 +515,38 @@ body {
 
 .included-image {
     width: 100%;
-    height: 220px;
     overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #fafafa;
+    min-height: 200px;
 }
 
 .included-image img {
     width: 100%;
-    height: 100%;
-    object-fit: cover;
+    height: auto;
+    max-width: 100%;
+    display: block;
+    object-fit: contain;
+    object-position: center;
 }
 
 .included-content {
-    padding: 25px;
+    padding: 20px;
 }
 
 .included-content h3 {
-    font-size: 1.3rem;
+    font-size: 1.2rem;
     font-weight: 600;
     color: var(--dark-brown);
-    margin-bottom: 12px;
+    margin-bottom: 8px;
 }
 
 .included-content p {
     color: var(--text-brown);
-    line-height: 1.6;
+    line-height: 1.5;
+    font-size: 0.95rem;
 }
 
 /* ================================
@@ -562,8 +573,21 @@ body {
 
 .journey-image {
     width: 100%;
-    height: 250px;
     overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #fafafa;
+    min-height: 200px;
+}
+
+.journey-image img {
+    width: 100%;
+    height: auto;
+    max-width: 100%;
+    display: block;
+    object-fit: contain;
+    object-position: center;
 }
 
 .journey-content {
@@ -1227,6 +1251,56 @@ body {
 
     .cta-button {
         display: none;
+    }
+
+    /* Center text for hero sections, CTAs, and pricing on mobile */
+    .hero-main-overlay {
+        text-align: center;
+    }
+    
+    .section-title,
+    .section-subtitle {
+        text-align: center;
+    }
+    
+    .bundle-offer-content {
+        text-align: center;
+    }
+    
+    .bundle-offer-pricing {
+        text-align: center;
+        flex-direction: column;
+        align-items: center;
+        gap: 5px;
+    }
+    
+    .bundle-offer-pricing .bundle-value {
+        display: block;
+        margin-top: 5px;
+    }
+    
+    .feature-text {
+        text-align: center;
+    }
+    
+    .downsell-content {
+        text-align: center;
+    }
+    
+    .downsell-card {
+        text-align: center;
+    }
+    
+    .final-cta-section {
+        text-align: center;
+    }
+    
+    .testimonial-content {
+        text-align: center;
+    }
+    
+    .faq-section h2 {
+        text-align: center;
     }
 
     .hero-main-content {

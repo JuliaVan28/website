@@ -129,6 +129,9 @@ class Carousel {
     }
     
     init() {
+        // Initialize carousel position to show first slide (slide 0)
+        this.goToSlide(0);
+        
         // Generate dots dynamically
         this.generateDots();
         
@@ -140,7 +143,47 @@ class Carousel {
             dot.addEventListener('click', () => this.goToSlide(index));
         });
         
-        // Auto-play video when it comes into view
+        // Set up initial video with better error handling
+        const firstVideo = this.slides[0].querySelector('.carousel-video');
+        if (firstVideo) {
+            console.log('Setting up first video:', firstVideo);
+            
+            // Ensure first video is set up for autoplay
+            firstVideo.muted = true;
+            firstVideo.playsInline = true;
+            
+            // Add error listener
+            firstVideo.addEventListener('error', (e) => {
+                console.error('First video error:', e);
+                console.error('Video sources:', Array.from(firstVideo.querySelectorAll('source')).map(s => s.src));
+            });
+            
+            // Add load listener
+            firstVideo.addEventListener('loadstart', () => {
+                console.log('First video started loading');
+            });
+            
+            firstVideo.addEventListener('loadeddata', () => {
+                console.log('First video data loaded');
+                firstVideo.play().catch((e) => {
+                    console.log('Autoplay prevented:', e.message);
+                });
+            });
+            
+            // Force load the video
+            firstVideo.load();
+            
+            // Try to play immediately if ready
+            if (firstVideo.readyState >= 1) {
+                firstVideo.play().catch((e) => {
+                    console.log('Initial play prevented:', e.message);
+                });
+            }
+        } else {
+            console.error('First video element not found!');
+        }
+        
+        // Auto-play video when it comes into view (for slide changes)
         this.handleVideoAutoplay();
         
         // Touch/swipe support
@@ -196,54 +239,65 @@ class Carousel {
     }
     
     handleVideoAutoplay() {
-        // Pause all videos first
+        // Pause all videos first (except the one we want to play)
+        const currentSlideVideo = this.slides[this.currentSlide].querySelector('.carousel-video');
+        
         this.videos.forEach(video => {
-            video.pause();
-            video.currentTime = 0; // Reset to beginning
+            if (video !== currentSlideVideo) {
+                video.pause();
+                video.currentTime = 0; // Reset to beginning
+            }
         });
         
         // Play video on current slide if it exists
-        const currentSlideVideo = this.slides[this.currentSlide].querySelector('.carousel-video');
-        
         if (currentSlideVideo) {
-            // Add error handling for video loading issues
-            currentSlideVideo.addEventListener('error', (e) => {
-                console.error('Video loading error:', {
-                    videoIndex: currentSlideVideo.getAttribute('data-video-index'),
-                    error: e,
-                    sources: Array.from(currentSlideVideo.querySelectorAll('source')).map(s => ({
-                        src: s.src,
-                        type: s.type
-                    }))
-                });
-            }, { once: true });
-            
-            // Ensure video is loaded and ready
-            if (currentSlideVideo.readyState >= 2) {
-                // Video has enough data to play
-                currentSlideVideo.play().catch((error) => {
-                    console.log('Video autoplay prevented:', error);
-                });
-            } else {
-                // Wait for video to load enough data
-                const playWhenReady = () => {
-                    currentSlideVideo.play().catch((error) => {
-                        console.log('Video autoplay prevented:', error);
+            // Add error handling for video loading issues (only once)
+            if (!currentSlideVideo.hasAttribute('data-error-handler-added')) {
+                currentSlideVideo.setAttribute('data-error-handler-added', 'true');
+                currentSlideVideo.addEventListener('error', (e) => {
+                    console.error('Video loading error:', {
+                        videoIndex: currentSlideVideo.getAttribute('data-video-index'),
+                        error: e,
+                        sources: Array.from(currentSlideVideo.querySelectorAll('source')).map(s => ({
+                            src: s.src,
+                            type: s.type
+                        }))
                     });
+                });
+            }
+            
+            // Try to play the video
+            const playVideo = () => {
+                currentSlideVideo.play().catch((error) => {
+                    // Autoplay might be prevented - that's okay, user can click to play
+                    console.log('Video autoplay prevented (this is normal):', error.message);
+                });
+            };
+            
+            // If video is already loaded enough, play immediately
+            if (currentSlideVideo.readyState >= 2) {
+                playVideo();
+            } else if (currentSlideVideo.readyState >= 1) {
+                // Has metadata, try playing
+                playVideo();
+            } else {
+                // Wait for video to be ready, but also try to play now (browser might handle it)
+                playVideo();
+                
+                // Set up listeners for when video becomes ready
+                const playWhenReady = () => {
+                    if (currentSlideVideo.paused) {
+                        playVideo();
+                    }
                 };
                 
-                if (currentSlideVideo.readyState >= 1) {
-                    // Video has metadata, try playing
-                    playWhenReady();
-                } else {
-                    // Wait for video to load enough data
-                    currentSlideVideo.addEventListener('loadeddata', playWhenReady, { once: true });
-                    currentSlideVideo.addEventListener('canplay', playWhenReady, { once: true });
-                    
-                    // Load the video if not already loading
-                    if (currentSlideVideo.readyState === 0) {
-                        currentSlideVideo.load();
-                    }
+                currentSlideVideo.addEventListener('loadeddata', playWhenReady, { once: true });
+                currentSlideVideo.addEventListener('canplay', playWhenReady, { once: true });
+                currentSlideVideo.addEventListener('canplaythrough', playWhenReady, { once: true });
+                
+                // Load the video if not already loading
+                if (currentSlideVideo.readyState === 0) {
+                    currentSlideVideo.load();
                 }
             }
         }
