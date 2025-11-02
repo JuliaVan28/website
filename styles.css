@@ -897,6 +897,7 @@ body {
 .testimonials-section {
     padding: clamp(60px, 10vw, 100px) 0;
     background-color: var(--light-bg);
+    display: none; /* Hidden for now */
 }
 
 .testimonials-grid {
@@ -989,8 +990,9 @@ body {
 }
 
 .faq-item.active .faq-answer {
-    max-height: 200px;
+    max-height: 1000px;
     padding: 0 25px 25px;
+    overflow-y: auto;
 }
 
 .faq-answer p {
@@ -1000,8 +1002,30 @@ body {
 }
 
 .faq-answer a {
-    color: var(--main-pink);
+    color: var(--dark-brown);
     text-decoration: none;
+    font-weight: 600;
+}
+
+.faq-answer a:hover {
+    color: var(--main-pink);
+    text-decoration: underline;
+}
+
+/* Make email addresses more visible - FAQ answers */
+.faq-answer a[href^="mailto:"] {
+    color: var(--dark-brown) !important;
+    font-weight: 600;
+}
+
+/* Make email addresses more visible - Footer */
+.footer-section p {
+    color: rgba(255, 255, 255, 0.95) !important;
+    font-weight: 500;
+}
+
+.footer-section a[href^="mailto:"] {
+    color: rgba(255, 255, 255, 0.95) !important;
     font-weight: 500;
 }
 
@@ -1009,7 +1033,7 @@ body {
    Final CTA Section
    ================================ */
 .final-cta-section {
-    padding: clamp(60px, 10vw, 100px) 0;
+    padding: clamp(40px, 6vw, 60px) 0;
     background: radial-gradient(circle at top left, rgba(245, 203, 204, 0.35), transparent 45%),
                 linear-gradient(135deg, rgba(249, 243, 243, 0.95) 0%, rgba(245, 203, 204, 0.22) 100%);
 }
@@ -1024,19 +1048,19 @@ body {
     font-size: clamp(2rem, 4vw, 2.5rem);
     font-weight: 700;
     color: var(--dark-brown);
-    margin-bottom: 20px;
+    margin-bottom: 12px;
     line-height: 1.2;
 }
 
 .final-cta-description {
     font-size: clamp(1rem, 2vw, 1.15rem);
     color: var(--text-brown);
-    margin-bottom: 35px;
-    line-height: 1.7;
+    margin-bottom: 20px;
+    line-height: 1.6;
 }
 
 .final-cta-price {
-    margin-bottom: 30px;
+    margin-bottom: 20px;
 }
 
 .price-label {
@@ -1054,11 +1078,11 @@ body {
 }
 
 .final-cta-features {
-    margin: 35px 0;
+    margin: 20px 0;
 }
 
 .cta-feature {
-    padding: 10px 0;
+    padding: 6px 0;
     color: var(--text-brown);
     font-size: 1.05rem;
 }
@@ -1070,13 +1094,13 @@ body {
     background: linear-gradient(135deg, var(--dark-brown), var(--text-brown));
     color: var(--white);
     border: none;
-    padding: 22px 54px;
+    padding: 18px 54px;
     border-radius: 999px;
     font-weight: 700;
     cursor: pointer;
     font-size: 1.2rem;
     box-shadow: 0 18px 36px rgba(139, 111, 108, 0.4);
-    margin: 20px 0;
+    margin: 12px 0;
     text-decoration: none;
     text-align: center;
     text-transform: uppercase;
@@ -1093,7 +1117,7 @@ body {
     justify-content: center;
     gap: 30px;
     flex-wrap: wrap;
-    margin-top: 25px;
+    margin-top: 15px;
 }
 
 .trust-badge-item {
@@ -1311,7 +1335,7 @@ body {
 
     .hero-main-overlay {
         width: 85%;
-        bottom: 20px;
+        bottom: 12px;
     }
 
     .hero-main-title {
