@@ -834,6 +834,9 @@ body {
     cursor: pointer;
     font-size: 1rem;
     box-shadow: 0 8px 25px rgba(139, 111, 108, 0.3);
+    text-decoration: none;
+    display: inline-block;
+    text-align: center;
 }
 
 .downsell-button:hover {
