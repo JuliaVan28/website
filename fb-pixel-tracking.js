@@ -1,6 +1,11 @@
 /**
  * Facebook Pixel Event Tracking
- * Comprehensive tracking for purchases and conversions
+ * Production-ready tracking for purchases and conversions
+ * 
+ * Events tracked:
+ * - PageView (automatic via base Pixel code)
+ * - InitiateCheckout (when user clicks Lemon Squeezy buy buttons)
+ * - Purchase (when purchase is completed on Lemon Squeezy)
  */
 
 // Product mapping with prices and IDs
@@ -32,62 +37,8 @@ const PRODUCTS = {
 const CURRENCY = 'USD';
 
 /**
- * Track ViewContent event
- * Triggered when viewing product pages or product sections
- */
-function trackViewContent(productId = null, productName = null) {
-    const params = {
-        content_name: productName || 'Pregnancy Kit Products',
-        content_category: 'Digital Products',
-        currency: CURRENCY
-    };
-
-    if (productId && PRODUCTS[productId]) {
-        const product = PRODUCTS[productId];
-        params.content_ids = [product.content_id];
-        params.value = product.value;
-        params.content_name = product.content_name;
-        params.content_category = product.content_category;
-    }
-
-    if (typeof fbq !== 'undefined') {
-        fbq('track', 'ViewContent', params);
-        console.log('Facebook Pixel: ViewContent tracked', params);
-    }
-}
-
-/**
- * Track AddToCart event
- * Triggered when user clicks a buy button
- */
-function trackAddToCart(productId, productName = null) {
-    if (!productId) return;
-
-    const product = PRODUCTS[productId] || {
-        name: productName || 'Product',
-        value: 0,
-        content_id: productId,
-        content_name: productName || 'Product',
-        content_category: 'Digital Product'
-    };
-
-    const params = {
-        content_ids: [product.content_id],
-        content_name: product.content_name,
-        content_category: product.content_category,
-        value: product.value,
-        currency: CURRENCY
-    };
-
-    if (typeof fbq !== 'undefined') {
-        fbq('track', 'AddToCart', params);
-        console.log('Facebook Pixel: AddToCart tracked', params);
-    }
-}
-
-/**
  * Track InitiateCheckout event
- * Triggered when user starts checkout process
+ * Triggered when user clicks a Lemon Squeezy buy button
  */
 function trackInitiateCheckout(productId, productName = null) {
     if (!productId) return;
@@ -146,6 +97,15 @@ function trackPurchase(productId, orderId = null, productName = null) {
     if (typeof fbq !== 'undefined') {
         fbq('track', 'Purchase', params);
         console.log('Facebook Pixel: Purchase tracked', params);
+    } else {
+        // Retry if fbq is not yet loaded
+        console.warn('Facebook Pixel not loaded, retrying Purchase event...');
+        setTimeout(() => {
+            if (typeof fbq !== 'undefined') {
+                fbq('track', 'Purchase', params);
+                console.log('Facebook Pixel: Purchase tracked (retry)', params);
+            }
+        }, 1000);
     }
 }
 
@@ -161,29 +121,102 @@ function extractProductIdFromUrl(url) {
         return match[1];
     }
     
+    // Also check for product ID in query parameters
+    try {
+        const urlObj = new URL(url);
+        const productId = urlObj.searchParams.get('product_id') || 
+                         urlObj.searchParams.get('variant_id') ||
+                         urlObj.searchParams.get('checkout[product_id]') ||
+                         urlObj.searchParams.get('checkout[variant_id]');
+        if (productId) return productId;
+    } catch (e) {
+        // Not a valid URL, continue
+    }
+    
     return null;
 }
 
 /**
- * Track Lead event
- * Triggered when user shows intent to purchase
+ * Store product ID with multiple fallback methods
  */
-function trackLead(productId = null) {
-    const params = {
-        content_category: 'Digital Products',
-        currency: CURRENCY
-    };
-
-    if (productId && PRODUCTS[productId]) {
-        const product = PRODUCTS[productId];
-        params.content_ids = [product.content_id];
-        params.content_name = product.content_name;
-        params.value = product.value;
+function storeProductId(productId, productName) {
+    if (!productId) return;
+    
+    const timestamp = Date.now().toString();
+    
+    // Try sessionStorage first (preferred for same-session tracking)
+    try {
+        sessionStorage.setItem('ls_product_id', productId);
+        sessionStorage.setItem('ls_product_name', productName);
+        sessionStorage.setItem('ls_product_timestamp', timestamp);
+    } catch (e) {
+        // Fallback to localStorage if sessionStorage fails
+        try {
+            localStorage.setItem('ls_product_id', productId);
+            localStorage.setItem('ls_product_name', productName);
+            localStorage.setItem('ls_product_timestamp', timestamp);
+        } catch (e2) {
+            // Both failed, ignore
+        }
     }
+}
 
-    if (typeof fbq !== 'undefined') {
-        fbq('track', 'Lead', params);
-        console.log('Facebook Pixel: Lead tracked', params);
+/**
+ * Retrieve stored product ID with fallback
+ */
+function getStoredProductId() {
+    let storedTimestamp = null;
+    let storedProductId = null;
+    
+    // Try sessionStorage first
+    try {
+        storedTimestamp = sessionStorage.getItem('ls_product_timestamp');
+        storedProductId = sessionStorage.getItem('ls_product_id');
+    } catch (e) {
+        // Fallback to localStorage
+        try {
+            storedTimestamp = localStorage.getItem('ls_product_timestamp');
+            storedProductId = localStorage.getItem('ls_product_id');
+        } catch (e2) {
+            return null;
+        }
+    }
+    
+    if (storedTimestamp && storedProductId) {
+        const age = Date.now() - parseInt(storedTimestamp);
+        if (age < 3600000) { // 1 hour
+            return storedProductId;
+        } else {
+            // Clean up expired data
+            try {
+                sessionStorage.removeItem('ls_product_id');
+                sessionStorage.removeItem('ls_product_name');
+                sessionStorage.removeItem('ls_product_timestamp');
+                localStorage.removeItem('ls_product_id');
+                localStorage.removeItem('ls_product_name');
+                localStorage.removeItem('ls_product_timestamp');
+            } catch (e) {
+                // Ignore cleanup errors
+            }
+        }
+    }
+    
+    return null;
+}
+
+/**
+ * Clean up stored product ID
+ */
+function cleanupStoredProductId() {
+    try {
+        sessionStorage.removeItem('ls_product_id');
+        sessionStorage.removeItem('ls_product_name');
+        sessionStorage.removeItem('ls_product_timestamp');
+        localStorage.removeItem('ls_product_id');
+        localStorage.removeItem('ls_product_name');
+        localStorage.removeItem('ls_product_timestamp');
+    } catch (e) {
+        // Ignore cleanup errors
     }
 }
 
@@ -232,21 +265,9 @@ function detectLemonSqueezyPurchase() {
                        extractProductIdFromUrl(document.referrer) ||
                        extractProductIdFromUrl(currentUrl);
         
-        // If we can't find product ID in URL, try sessionStorage
+        // If we can't find product ID in URL, try stored product ID
         if (!productId) {
-            try {
-                const storedTimestamp = sessionStorage.getItem('ls_product_timestamp');
-                const storedProductId = sessionStorage.getItem('ls_product_id');
-                
-                if (storedTimestamp && storedProductId) {
-                    const age = Date.now() - parseInt(storedTimestamp);
-                    if (age < 3600000) { // 1 hour
-                        productId = storedProductId;
-                    }
-                }
-            } catch (e) {
-                // Ignore errors
-            }
+            productId = getStoredProductId();
         }
         
         if (productId) {
@@ -257,13 +278,7 @@ function detectLemonSqueezyPurchase() {
             purchaseTracked = true;
             
             // Clean up stored data
-            try {
-                sessionStorage.removeItem('ls_product_id');
-                sessionStorage.removeItem('ls_product_name');
-                sessionStorage.removeItem('ls_product_timestamp');
-            } catch (e) {
-                // Ignore cleanup errors
-            }
+            cleanupStoredProductId();
             
             return true;
         }
@@ -304,7 +319,6 @@ function detectLemonSqueezyPurchase() {
     });
 
     // Method 3: Monitor for Lemon Squeezy checkout completion via URL hash
-    // Lemon Squeezy sometimes uses URL hash for success state
     if (window.location.hash) {
         const hash = window.location.hash.toLowerCase();
         if (hash.includes('success') || hash.includes('complete') || hash.includes('thank')) {
@@ -338,7 +352,12 @@ function detectLemonSqueezyPurchase() {
             'order complete',
             'status: paid',
             'order #',
-            'view order'
+            'view order',
+            'woohoo',
+            'receipt is on its way',
+            'download',
+            'your order',
+            'order summary'
         ];
 
         const hasSuccessText = successTexts.some(text => pageText.includes(text));
@@ -349,47 +368,44 @@ function detectLemonSqueezyPurchase() {
                            extractProductIdFromUrl(document.referrer) ||
                            extractProductIdFromUrl(window.location.search);
             
-            // If we can't find product ID in URL, try to get it from sessionStorage
-            // (stored when user clicked buy button)
+            // If we can't find product ID in URL, try to get it from storage
             if (!productId) {
-                try {
-                    const storedTimestamp = sessionStorage.getItem('ls_product_timestamp');
-                    const storedProductId = sessionStorage.getItem('ls_product_id');
-                    
-                    // Only use stored product ID if it's less than 1 hour old
-                    if (storedTimestamp && storedProductId) {
-                        const age = Date.now() - parseInt(storedTimestamp);
-                        if (age < 3600000) { // 1 hour in milliseconds
-                            productId = storedProductId;
-                        } else {
-                            // Clean up expired data
-                            sessionStorage.removeItem('ls_product_id');
-                            sessionStorage.removeItem('ls_product_name');
-                            sessionStorage.removeItem('ls_product_timestamp');
-                        }
-                    }
-                } catch (e) {
-                    console.log('Could not read product ID from sessionStorage:', e);
-                }
+                productId = getStoredProductId();
             }
             
             // Also check for order number in URL or page content
-            const orderMatch = window.location.pathname.match(/my-orders\/([a-f0-9-]+)/i) ||
-                              pageText.match(/order\s*#?\s*(\d+)/i);
-            const orderId = orderMatch ? orderMatch[1] : null;
+            // Try multiple patterns for order ID extraction
+            let orderId = null;
+            
+            // Pattern 1: From URL path (my-orders/{order-id})
+            const urlOrderMatch = window.location.pathname.match(/my-orders\/([a-f0-9-]+)/i);
+            if (urlOrderMatch) {
+                orderId = urlOrderMatch[1];
+            }
+            
+            // Pattern 2: From URL parameters
+            if (!orderId) {
+                const urlParams = new URLSearchParams(window.location.search);
+                orderId = urlParams.get('order_id') || 
+                         urlParams.get('order_number') ||
+                         urlParams.get('checkout[order_id]');
+            }
+            
+            // Pattern 3: From page text (Order #12345 or Order 12345)
+            if (!orderId) {
+                const textOrderMatch = pageText.match(/order\s*#?\s*(\d+)/i) ||
+                                      pageText.match(/order\s*id[:\s]+([a-f0-9-]+)/i);
+                if (textOrderMatch) {
+                    orderId = textOrderMatch[1];
+                }
+            }
 
             if (productId && !purchaseTracked) {
                 trackPurchase(productId, orderId);
                 purchaseTracked = true;
                 
                 // Clean up stored product ID after successful tracking
-                try {
-                    sessionStorage.removeItem('ls_product_id');
-                    sessionStorage.removeItem('ls_product_name');
-                    sessionStorage.removeItem('ls_product_timestamp');
-                } catch (e) {
-                    // Ignore cleanup errors
-                }
+                cleanupStoredProductId();
                 
                 return true;
             }
@@ -404,7 +420,6 @@ function detectLemonSqueezyPurchase() {
     }
 
     // Method 5: Monitor for Lemon Squeezy iframe completion and DOM changes
-    // Check if Lemon Squeezy checkout modal/iframe exists
     const checkLemonSqueezyCheckout = setInterval(() => {
         if (purchaseTracked) {
             clearInterval(checkLemonSqueezyCheckout);
@@ -419,7 +434,7 @@ function detectLemonSqueezyPurchase() {
 
         // Look for success indicators in the DOM
         const successElements = document.querySelectorAll(
-            '[class*="success"], [id*="success"], [class*="thank"], [id*="thank"], [class*="complete"], [id*="complete"], [class*="confirmation"], [id*="confirmation"]'
+            '[class*="success"], [id*="success"], [class*="thank"], [id*="thank"], [class*="complete"], [id*="complete"], [class*="confirmation"], [id*="confirmation"], [class*="paid"], [id*="paid"]'
         );
         
         if (successElements.length > 0) {
@@ -429,13 +444,19 @@ function detectLemonSqueezyPurchase() {
             
             if (lemonSqueezyIframe || isLemonSqueezyDomain) {
                 // Try to extract product info from page
-                const productId = extractProductIdFromUrl(window.location.href) ||
-                                 extractProductIdFromUrl(document.referrer) ||
-                                 extractProductIdFromUrl(lemonSqueezyIframe?.src);
+                let productId = extractProductIdFromUrl(window.location.href) ||
+                               extractProductIdFromUrl(document.referrer) ||
+                               extractProductIdFromUrl(lemonSqueezyIframe?.src);
+                
+                // Fallback to stored product ID
+                if (!productId) {
+                    productId = getStoredProductId();
+                }
                 
                 if (productId && !purchaseTracked) {
                     trackPurchase(productId);
                     purchaseTracked = true;
+                    cleanupStoredProductId();
                     clearInterval(checkLemonSqueezyCheckout);
                 }
             }
@@ -451,11 +472,11 @@ function detectLemonSqueezyPurchase() {
 }
 
 /**
- * Initialize tracking for all buy buttons
+ * Initialize tracking for Lemon Squeezy buy buttons only
  */
 function initializeButtonTracking() {
-    // Track all Lemon Squeezy buy buttons
-    document.querySelectorAll('a[href*="lemonsqueezy.com/buy"], .lemonsqueezy-button, [class*="lemonsqueezy"]').forEach(button => {
+    // Track only Lemon Squeezy buy buttons (buttons that open checkout)
+    document.querySelectorAll('a[href*="lemonsqueezy.com/buy"]').forEach(button => {
         button.addEventListener('click', function(e) {
             const href = this.getAttribute('href');
             if (!href) return;
@@ -466,65 +487,13 @@ function initializeButtonTracking() {
                                'Product';
 
             if (productId) {
-                // Track AddToCart when clicking buy button
-                trackAddToCart(productId, productName);
-                
                 // Track InitiateCheckout (user is starting checkout)
                 trackInitiateCheckout(productId, productName);
                 
-                // Also track as Lead (showing purchase intent)
-                trackLead(productId);
-                
                 // Store product ID for purchase tracking on Lemon Squeezy success page
-                // This helps us track purchases even when we can't extract product ID from URL
-                try {
-                    sessionStorage.setItem('ls_product_id', productId);
-                    sessionStorage.setItem('ls_product_name', productName);
-                    // Store timestamp to expire after 1 hour
-                    sessionStorage.setItem('ls_product_timestamp', Date.now().toString());
-                } catch (e) {
-                    console.log('Could not store product ID in sessionStorage:', e);
-                }
+                storeProductId(productId, productName);
             }
         });
-    });
-
-    // Track CTA buttons that scroll to checkout
-    document.querySelectorAll('[onclick*="scrollToCheckout"], .cta-button, .cta-button-large, .cta-button-hero').forEach(button => {
-        button.addEventListener('click', function() {
-            // Track as Lead when user shows intent
-            trackLead();
-        });
-    });
-}
-
-/**
- * Track product views on products page
- */
-function initializeProductViewTracking() {
-    // Track when viewing products page
-    if (window.location.pathname.includes('products.html') || 
-        window.location.pathname.includes('products')) {
-        trackViewContent();
-    }
-
-    // Track individual product card views (when scrolled into view)
-    const productObserver = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                const productCard = entry.target;
-                const productLink = productCard.querySelector('a[href*="amazon"]');
-                if (productLink) {
-                    const productName = productCard.querySelector('.product-name')?.textContent;
-                    trackViewContent(null, productName);
-                    productObserver.unobserve(productCard);
-                }
-            }
-        });
-    }, { threshold: 0.5 });
-
-    document.querySelectorAll('.product-card').forEach(card => {
-        productObserver.observe(card);
     });
 }
 
@@ -542,19 +511,8 @@ function initializeFacebookPixelTracking() {
     // Initialize button tracking
     initializeButtonTracking();
 
-    // Initialize product view tracking
-    initializeProductViewTracking();
-
     // Detect purchase completion
     detectLemonSqueezyPurchase();
-
-    // Track page views for specific sections
-    if (window.location.hash) {
-        const hash = window.location.hash;
-        if (hash === '#bundle-checkout' || hash === '#checkout') {
-            trackLead();
-        }
-    }
 
     console.log('Facebook Pixel tracking initialized');
 }
@@ -587,4 +545,3 @@ window.addEventListener('popstate', () => {
         detectLemonSqueezyPurchase();
     }, 500);
 });
-
