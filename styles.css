@@ -749,6 +749,163 @@ body {
     background-color: var(--white);
 }
 
+/* Bundle Reminder at Top - Centered Card Design */
+.bundle-reminder-top {
+    position: relative;
+    max-width: 700px;
+    margin: 50px auto 40px;
+    background: linear-gradient(135deg, rgba(245, 203, 204, 0.35) 0%, rgba(240, 180, 182, 0.25) 100%);
+    border: 3px solid var(--main-pink);
+    border-radius: 24px;
+    padding: 50px 40px 40px;
+    box-shadow: 0 20px 60px rgba(179, 135, 132, 0.25);
+    text-align: center;
+}
+
+.bundle-reminder-badge {
+    position: absolute;
+    top: -15px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: linear-gradient(135deg, var(--dark-brown), var(--text-brown));
+    color: var(--white);
+    padding: 8px 30px;
+    border-radius: 50px;
+    font-weight: 700;
+    font-size: 0.85rem;
+    letter-spacing: 1.5px;
+    box-shadow: 0 8px 20px rgba(139, 111, 108, 0.3);
+}
+
+.bundle-reminder-content-wrapper {
+    display: block;
+    margin-bottom: 30px;
+}
+
+.bundle-reminder-icon-large {
+    font-size: 5rem;
+    display: block;
+    margin-bottom: 20px;
+}
+
+.bundle-reminder-main h3 {
+    font-size: 1.9rem;
+    font-weight: 700;
+    color: var(--dark-brown);
+    margin-bottom: 15px;
+    line-height: 1.3;
+}
+
+.bundle-reminder-description {
+    font-size: 1.05rem;
+    color: var(--text-brown);
+    margin-bottom: 20px;
+    line-height: 1.6;
+}
+
+.bundle-label {
+    font-size: 0.95rem;
+    color: var(--text-brown);
+    margin-bottom: 15px;
+    font-weight: 500;
+}
+
+.bundle-reminder-pricing {
+    display: block;
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.bundle-reminder-price {
+    display: block;
+    font-size: 3.5rem;
+    font-weight: 700;
+    color: var(--dark-brown);
+    line-height: 1;
+    margin-bottom: 10px;
+}
+
+.bundle-reminder-save {
+    display: block;
+    font-size: 1.1rem;
+    color: var(--accent-pink);
+    font-weight: 700;
+}
+
+.bundle-reminder-features-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    justify-content: center;
+    margin-bottom: 30px;
+}
+
+.bundle-reminder-features-list span {
+    background: rgba(255, 255, 255, 0.7);
+    padding: 8px 16px;
+    border-radius: 50px;
+    font-size: 0.95rem;
+    color: var(--text-brown);
+    font-weight: 500;
+}
+
+.bundle-reminder-button-large {
+    display: inline-block;
+    background: linear-gradient(135deg, var(--dark-brown), var(--text-brown));
+    color: var(--white);
+    border: none;
+    padding: 22px 50px;
+    border-radius: 999px;
+    font-weight: 700;
+    cursor: pointer;
+    font-size: 1.2rem;
+    box-shadow: 0 15px 40px rgba(139, 111, 108, 0.4);
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    text-decoration: none;
+    text-align: center;
+}
+
+.bundle-reminder-button-large:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 20px 50px rgba(139, 111, 108, 0.5);
+}
+
+/* Divider */
+.downsell-divider {
+    text-align: center;
+    margin: 50px 0;
+    position: relative;
+}
+
+.downsell-divider::before,
+.downsell-divider::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    width: 40%;
+    height: 1px;
+    background: linear-gradient(to right, transparent, rgba(179, 135, 132, 0.3), transparent);
+}
+
+.downsell-divider::before {
+    left: 0;
+}
+
+.downsell-divider::after {
+    right: 0;
+}
+
+.downsell-divider span {
+    background: var(--white);
+    padding: 0 20px;
+    color: var(--text-brown);
+    font-size: 0.95rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
 .downsell-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -1033,12 +1190,166 @@ body {
 }
 
 /* ================================
-   Final CTA Section
+   Final CTA Section - Redesigned with Beautiful Card
    ================================ */
 .final-cta-section {
-    padding: clamp(40px, 6vw, 60px) 0;
-    background: radial-gradient(circle at top left, rgba(245, 203, 204, 0.35), transparent 45%),
-                linear-gradient(135deg, rgba(249, 243, 243, 0.95) 0%, rgba(245, 203, 204, 0.22) 100%);
+    padding: clamp(60px, 10vw, 100px) 0;
+    background: linear-gradient(135deg, rgba(249, 243, 243, 0.95) 0%, rgba(245, 203, 204, 0.15) 100%);
+}
+
+/* Beautiful Bundle Card */
+.final-bundle-card {
+    position: relative;
+    max-width: 800px;
+    margin: 50px auto 0;
+    background: var(--white);
+    border: 3px solid var(--main-pink);
+    border-radius: 30px;
+    overflow: hidden;
+    box-shadow: 0 25px 70px rgba(179, 135, 132, 0.3);
+}
+
+.bundle-card-badge {
+    position: absolute;
+    top: -15px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: linear-gradient(135deg, var(--dark-brown), var(--text-brown));
+    color: var(--white);
+    padding: 8px 35px;
+    border-radius: 50px;
+    font-weight: 700;
+    font-size: 0.9rem;
+    letter-spacing: 1.5px;
+    box-shadow: 0 8px 20px rgba(139, 111, 108, 0.4);
+    z-index: 10;
+}
+
+.bundle-card-content {
+    padding: 50px 40px 40px;
+    background: linear-gradient(160deg, rgba(255, 255, 255, 1) 0%, rgba(249, 243, 243, 0.5) 100%);
+}
+
+.bundle-card-header {
+    display: flex;
+    align-items: center;
+    gap: 25px;
+    margin-bottom: 30px;
+}
+
+.bundle-card-icon {
+    font-size: 4rem;
+    flex-shrink: 0;
+}
+
+.bundle-card-title-section h3 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--dark-brown);
+    margin-bottom: 8px;
+    line-height: 1.2;
+}
+
+.bundle-card-title-section p {
+    font-size: 1.1rem;
+    color: var(--text-brown);
+    margin: 0;
+}
+
+.bundle-card-features {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    margin-bottom: 35px;
+    padding: 30px;
+    background: rgba(245, 203, 204, 0.1);
+    border-radius: 20px;
+}
+
+.bundle-card-feature {
+    font-size: 1rem;
+    color: var(--text-brown);
+    font-weight: 500;
+}
+
+.bundle-card-pricing-section {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 30px;
+    margin-bottom: 25px;
+    flex-wrap: wrap;
+}
+
+.bundle-card-price-info {
+    display: flex;
+    align-items: baseline;
+    gap: 15px;
+}
+
+.bundle-card-price {
+    font-size: 3.5rem;
+    font-weight: 700;
+    color: var(--dark-brown);
+}
+
+.bundle-card-save {
+    font-size: 1.2rem;
+    color: var(--accent-pink);
+    font-weight: 700;
+}
+
+.bundle-card-button {
+    background: linear-gradient(135deg, var(--dark-brown), var(--text-brown));
+    color: var(--white);
+    border: none;
+    padding: 20px 45px;
+    border-radius: 999px;
+    font-weight: 700;
+    cursor: pointer;
+    font-size: 1.15rem;
+    box-shadow: 0 15px 40px rgba(139, 111, 108, 0.4);
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    text-decoration: none;
+    display: inline-block;
+    text-align: center;
+    white-space: nowrap;
+}
+
+.bundle-card-button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 20px 50px rgba(139, 111, 108, 0.5);
+}
+
+.bundle-card-trust {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    flex-wrap: wrap;
+    padding-top: 25px;
+    border-top: 1px solid rgba(179, 135, 132, 0.2);
+}
+
+.bundle-card-trust span {
+    color: var(--text-brown);
+    font-size: 0.95rem;
+    font-weight: 500;
+}
+
+/* Trust badges inline for bundle reminder top */
+.trust-badges-inline {
+    display: flex;
+    justify-content: center;
+    gap: 25px;
+    flex-wrap: wrap;
+    margin-top: 20px;
+}
+
+.trust-badges-inline .trust-badge-item {
+    color: var(--text-brown);
+    font-size: 0.9rem;
+    font-weight: 500;
 }
 
 .final-cta-content {
@@ -1254,16 +1565,17 @@ body {
 
     .nav {
         position: fixed;
-        top: 70px;
+        top: 58px;
         left: -100%;
         width: 100%;
-        height: calc(100vh - 70px);
+        height: calc(100vh - 58px);
         background: var(--white);
         flex-direction: column;
         padding: 30px;
         gap: 0;
         box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
         transition: left 0.3s ease;
+        z-index: 999;
     }
     
     .nav.active {
@@ -1411,13 +1723,148 @@ body {
         grid-template-columns: 1fr;
     }
     
+    /* Old bundle reminder - kept for compatibility */
     .bundle-reminder {
         flex-direction: column;
-    text-align: center;
-}
+        text-align: center;
+    }
 
     .bundle-reminder-button {
         width: 100%;
+    }
+    
+    /* New prominent bundle reminder at top - centered */
+    .bundle-reminder-top {
+        padding: 40px 20px 30px;
+        margin: 30px 15px 30px;
+    }
+    
+    .bundle-reminder-icon-large {
+        font-size: 4rem;
+    }
+    
+    .bundle-reminder-main h3 {
+        font-size: 1.5rem;
+        line-height: 1.3;
+    }
+    
+    .bundle-reminder-description {
+        font-size: 0.95rem;
+        line-height: 1.5;
+    }
+    
+    .bundle-label {
+        font-size: 0.9rem;
+        margin-bottom: 12px;
+    }
+    
+    .bundle-reminder-pricing {
+        margin-bottom: 25px;
+    }
+    
+    .bundle-reminder-price {
+        font-size: 2.5rem;
+        margin-bottom: 8px;
+    }
+    
+    .bundle-reminder-save {
+        font-size: 1rem;
+    }
+    
+    .bundle-reminder-features-list {
+        gap: 10px;
+        margin-bottom: 25px;
+    }
+    
+    .bundle-reminder-features-list span {
+        font-size: 0.85rem;
+        padding: 6px 14px;
+    }
+    
+    .bundle-reminder-button-large {
+        width: 100%;
+        max-width: 320px;
+        padding: 18px 30px;
+        font-size: 1rem;
+    }
+    
+    /* Final Bundle Card Mobile */
+    .final-bundle-card {
+        margin: 30px auto 0;
+    }
+    
+    .bundle-card-content {
+        padding: 40px 25px 30px;
+    }
+    
+    .bundle-card-header {
+        flex-direction: column;
+        text-align: center;
+        gap: 15px;
+    }
+    
+    .bundle-card-icon {
+        font-size: 3.5rem;
+    }
+    
+    .bundle-card-title-section h3 {
+        font-size: 1.6rem;
+    }
+    
+    .bundle-card-title-section p {
+        font-size: 1rem;
+    }
+    
+    .bundle-card-features {
+        grid-template-columns: 1fr;
+        gap: 12px;
+        padding: 20px;
+    }
+    
+    .bundle-card-feature {
+        font-size: 0.95rem;
+    }
+    
+    .bundle-card-pricing-section {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .bundle-card-price-info {
+        flex-direction: column;
+        align-items: center;
+        gap: 8px;
+    }
+    
+    .bundle-card-price {
+        font-size: 2.5rem;
+    }
+    
+    .bundle-card-save {
+        font-size: 1rem;
+    }
+    
+    .bundle-card-button {
+        width: 100%;
+        padding: 18px 30px;
+        font-size: 1rem;
+    }
+    
+    .bundle-card-trust {
+        gap: 15px;
+        font-size: 0.85rem;
+    }
+    
+    .bundle-card-trust span {
+        font-size: 0.85rem;
+    }
+    
+    .trust-badges-inline {
+        gap: 15px;
+    }
+    
+    .trust-badges-inline .trust-badge-item {
+        font-size: 0.85rem;
     }
     
     .carousel-nav {
