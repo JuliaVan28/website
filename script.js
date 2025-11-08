@@ -14,12 +14,31 @@ const smoothScrollTo = (targetId) => {
 
     const offset = getHeaderOffset();
     const elementY = target.getBoundingClientRect().top + window.pageYOffset;
-    const position = elementY - offset;
+    const targetPosition = elementY - offset;
+    const startPosition = window.pageYOffset;
+    const distance = targetPosition - startPosition;
+    const duration = 1200; // Duration in milliseconds (1.2 seconds for natural feel)
+    let startTime = null;
 
-    window.scrollTo({
-        top: position,
-        behavior: 'smooth'
-    });
+    // Easing function for smooth, natural deceleration
+    const easeInOutCubic = (t) => {
+        return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+    };
+
+    const animateScroll = (currentTime) => {
+        if (startTime === null) startTime = currentTime;
+        const timeElapsed = currentTime - startTime;
+        const progress = Math.min(timeElapsed / duration, 1);
+        const easedProgress = easeInOutCubic(progress);
+        
+        window.scrollTo(0, startPosition + distance * easedProgress);
+        
+        if (progress < 1) {
+            requestAnimationFrame(animateScroll);
+        }
+    };
+
+    requestAnimationFrame(animateScroll);
 };
 
 document.querySelectorAll('a[href^="#"], [data-scroll-target]').forEach(trigger => {
@@ -38,7 +57,7 @@ document.querySelectorAll('a[href^="#"], [data-scroll-target]').forEach(trigger 
 
 // Scroll to checkout utility exposed globally for inline handlers
 function scrollToCheckout() {
-    smoothScrollTo('#checkout');
+    smoothScrollTo('#bundle-checkout');
 }
 
 // Intersection Observer for fade-in animations

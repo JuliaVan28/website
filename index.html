@@ -78,7 +78,7 @@
                     <img src="Media/Ultimate-pregnancy-kit-main.webp" alt="Ultimate Pregnancy Kit Bundle - Complete Digital Planner and eBook" onerror="this.src='/Media/Ultimate-pregnancy-kit-main.webp'" />
                 </div>
                 <div class="bundle-offer-content">
-                    <div class="bundle-offer-tag">BRAND NEW</div>
+                    <div class="bundle-offer-tag">LIMITED TIME OFFER</div>
                     <h2 class="bundle-offer-title">THE ULTIMATE PREGNANCY KIT BUNDLE</h2>
                     <p class="bundle-offer-description">The complete solution for a well-organized, stress-free pregnancy journey. Everything you need in one affordable digital bundle.</p>
                     
@@ -91,11 +91,15 @@
                     </div>
                     
                     <div class="bundle-offer-pricing">
-                        <span class="bundle-price">$34.99</span>
-                        <span class="bundle-value">(Save $10.00 with bundle!)</span>
+                        <div class="price-wrapper">
+                            <span class="discount-badge">30% OFF</span>
+                            <span class="original-price">$49.99</span>
+                            <span class="bundle-price">$34.99</span>
+                        </div>
+                        <span class="bundle-value">Save $15.00 - Limited Time Offer!</span>
                     </div>
                     
-                    <button class="cta-button-large" onclick="scrollToCheckout()">GET YOUR BUNDLE NOW</button>
+                    <a href="https://pregnancykit.lemonsqueezy.com/buy/4fa282f9-869b-4246-99c0-1398396274ec?embed=1&logo=0" class="cta-button-large lemonsqueezy-button" style="display: inline-block; text-decoration: none; text-align: center;">GET YOUR BUNDLE NOW</a>
                     
                     <p class="bundle-offer-note">Try it now with <strong>INSTANT ACCESS</strong> • Digital download</p>
                 </div>
@@ -355,11 +359,11 @@
     <!-- Downsell Section -->
     <section class="downsell-section">
         <div class="container">
-            <h2 class="section-title">Prefer Individual Products?</h2>
-            <p class="section-subtitle">Choose what you need most for your pregnancy journey</p>
+            <h2 class="section-title">Special Offer for a Limited Time</h2>
+            <!-- <p class="section-subtitle">Special limited-time pricing - Choose what you need most for your pregnancy journey</p> -->
             
             <!-- Bundle Reminder - NOW AT TOP -->
-            <div class="bundle-reminder-top">
+            <div class="bundle-reminder-top" id="bundle-checkout">
                 <div class="bundle-reminder-badge">BEST VALUE</div>
                 <div class="bundle-reminder-content-wrapper">
                     <span class="bundle-reminder-icon-large">💝</span>
@@ -370,7 +374,12 @@
                         <p class="bundle-label">Complete Bundle</p>
                         
                         <div class="bundle-reminder-pricing">
-                            <span class="bundle-reminder-price">$34.99</span>
+                            <div class="price-wrapper">
+                                <span class="discount-badge">30% OFF</span>
+                                <span class="original-price">$49.99</span>
+                                <span class="bundle-reminder-price">$34.99</span>
+                            </div>
+                            <span class="bundle-reminder-save">Save $15.00 - Limited Time Offer!</span>
                         </div>
                         
                         <div class="bundle-reminder-features-list">
@@ -392,7 +401,7 @@
             </div>
             
             <div class="downsell-divider">
-                <span>or choose individual products</span>
+                <span>individual products</span>
             </div>
             
             <div class="downsell-grid">
@@ -410,7 +419,11 @@
                         <div class="downsell-feature">✓ Fully editable</div>
                     </div>
                     <div class="downsell-pricing">
-                        <span class="downsell-price">$24.99</span>
+                        <div class="price-wrapper">
+                            <span class="discount-badge-small">29% OFF</span>
+                            <span class="original-price">$34.99</span>
+                            <span class="downsell-price">$24.99</span>
+                        </div>
                         <span class="downsell-save">Save $10 with bundle</span>
                     </div>
                     <a href="https://pregnancykit.lemonsqueezy.com/buy/964ae0b7-b9e7-4034-8b7d-369c1cceadea?embed=1&logo=0" class="lemonsqueezy-button downsell-button">Get Planner Only</a>
@@ -430,7 +443,11 @@
                         <div class="downsell-feature">✓ Instant PDF download</div>
                     </div>
                     <div class="downsell-pricing">
-                        <span class="downsell-price">$19.99</span>
+                        <div class="price-wrapper">
+                            <span class="discount-badge-small">33% OFF</span>
+                            <span class="original-price">$29.99</span>
+                            <span class="downsell-price">$19.99</span>
+                        </div>
                         <span class="downsell-save">Save $15 with bundle</span>
                     </div>
                     <a href="https://pregnancykit.lemonsqueezy.com/buy/6f6b3354-ac9a-490e-8d19-4d6e98182585?embed=1&logo=0" class="lemonsqueezy-button downsell-button">Get eBook Only</a>
@@ -578,6 +595,7 @@
 
     <script src="script.js"></script>
     <script src="https://assets.lemonsqueezy.com/lemon.js" defer></script>
+    <script src="fb-pixel-tracking.js"></script>
     <script>
         // Diagnostic script to help identify issues on public server
         window.addEventListener('load', () => {

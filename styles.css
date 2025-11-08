@@ -698,18 +698,50 @@ body {
 .bundle-offer-pricing {
     margin-bottom: 30px;
     display: flex;
-    align-items: baseline;
-    gap: 15px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+}
+
+.bundle-offer-pricing .price-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+}
+
+.bundle-offer-pricing .original-price {
+    font-size: 2rem;
+    font-weight: 500;
+    color: var(--text-brown);
+    text-decoration: line-through;
+    opacity: 0.6;
+    line-height: 1;
 }
 
 .bundle-price {
     font-size: 3rem;
     font-weight: 700;
     color: var(--dark-brown);
+    line-height: 1;
+}
+
+.bundle-offer-pricing .discount-badge {
+    background: linear-gradient(135deg, #ff6b6b, #ee5a6f);
+    color: var(--white);
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    box-shadow: 0 4px 12px rgba(255, 107, 107, 0.3);
+    line-height: 1;
+    align-self: center;
 }
 
 .bundle-value {
-    font-size: 1rem;
+    font-size: 1.1rem;
     color: var(--accent-pink);
     font-weight: 600;
 }
@@ -816,13 +848,43 @@ body {
     margin-bottom: 30px;
 }
 
+.bundle-reminder-pricing .price-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 10px;
+}
+
+.bundle-reminder-pricing .original-price {
+    font-size: 2.2rem;
+    font-weight: 500;
+    color: var(--text-brown);
+    text-decoration: line-through;
+    opacity: 0.6;
+    line-height: 1;
+}
+
 .bundle-reminder-price {
-    display: block;
+    display: inline-block;
     font-size: 3.5rem;
     font-weight: 700;
     color: var(--dark-brown);
     line-height: 1;
-    margin-bottom: 10px;
+}
+
+.bundle-reminder-pricing .discount-badge {
+    background: linear-gradient(135deg, #ff6b6b, #ee5a6f);
+    color: var(--white);
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    box-shadow: 0 4px 12px rgba(255, 107, 107, 0.3);
+    line-height: 1;
+    align-self: center;
 }
 
 .bundle-reminder-save {
@@ -965,12 +1027,43 @@ body {
     margin: 25px 0;
 }
 
+.downsell-pricing .price-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 8px;
+}
+
+.downsell-pricing .original-price {
+    font-size: 1.8rem;
+    font-weight: 500;
+    color: var(--text-brown);
+    text-decoration: line-through;
+    opacity: 0.6;
+    line-height: 1;
+}
+
 .downsell-price {
-    display: block;
+    display: inline-block;
     font-size: 2.5rem;
     font-weight: 700;
     color: var(--dark-brown);
-    margin-bottom: 8px;
+    line-height: 1;
+}
+
+.downsell-pricing .discount-badge-small {
+    background: linear-gradient(135deg, #ff6b6b, #ee5a6f);
+    color: var(--white);
+    padding: 4px 10px;
+    border-radius: 15px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    box-shadow: 0 3px 8px rgba(255, 107, 107, 0.3);
+    line-height: 1;
+    align-self: center;
 }
 
 .downsell-save {
@@ -1610,12 +1703,36 @@ body {
         text-align: center;
         flex-direction: column;
         align-items: center;
-        gap: 5px;
+        gap: 10px;
+    }
+    
+    .bundle-offer-pricing .price-wrapper {
+        justify-content: center;
+        gap: 6px;
+        align-items: center;
+        flex-direction: column;
+    }
+    
+    .bundle-offer-pricing .original-price {
+        font-size: 1.5rem;
+        line-height: 1;
+    }
+    
+    .bundle-price {
+        font-size: 2.5rem;
+        line-height: 1;
+    }
+    
+    .bundle-offer-pricing .discount-badge {
+        font-size: 0.8rem;
+        padding: 5px 12px;
+        line-height: 1;
     }
     
     .bundle-offer-pricing .bundle-value {
         display: block;
         margin-top: 5px;
+        font-size: 1rem;
     }
     
     .feature-text {
@@ -1628,6 +1745,32 @@ body {
     
     .downsell-card {
         text-align: center;
+    }
+    
+    .downsell-pricing .price-wrapper {
+        gap: 5px;
+        align-items: center;
+        flex-direction: column;
+    }
+    
+    .downsell-pricing .original-price {
+        font-size: 1.4rem;
+        line-height: 1;
+    }
+    
+    .downsell-price {
+        font-size: 2rem;
+        line-height: 1;
+    }
+    
+    .downsell-pricing .discount-badge-small {
+        font-size: 0.7rem;
+        padding: 3px 8px;
+        line-height: 1;
+    }
+    
+    .downsell-save {
+        font-size: 0.85rem;
     }
     
     .final-cta-section {
@@ -1762,9 +1905,27 @@ body {
         margin-bottom: 25px;
     }
     
+    .bundle-reminder-pricing .price-wrapper {
+        gap: 6px;
+        align-items: center;
+        flex-direction: column;
+    }
+    
+    .bundle-reminder-pricing .original-price {
+        font-size: 1.8rem;
+        line-height: 1;
+    }
+    
     .bundle-reminder-price {
         font-size: 2.5rem;
         margin-bottom: 8px;
+        line-height: 1;
+    }
+    
+    .bundle-reminder-pricing .discount-badge {
+        font-size: 0.8rem;
+        padding: 5px 12px;
+        line-height: 1;
     }
     
     .bundle-reminder-save {
