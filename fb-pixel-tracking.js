@@ -198,6 +198,9 @@ function detectLemonSqueezyPurchase() {
 
     // Method 1: Check URL for success indicators
     const currentUrl = window.location.href;
+    const hostname = window.location.hostname.toLowerCase();
+    const isLemonSqueezyDomain = hostname.includes('lemonsqueezy.com');
+    
     const successPatterns = [
         /checkout\/success/i,
         /thank.?you/i,
@@ -205,21 +208,46 @@ function detectLemonSqueezyPurchase() {
         /payment\/success/i,
         /success/i,
         /confirmation/i,
-        /complete/i
+        /complete/i,
+        /my-orders/i  // Lemon Squeezy orders page
     ];
 
+    // Special case: Lemon Squeezy checkout page (pregnancykit.lemonsqueezy.com/checkout)
+    // This is the success page even though URL doesn't have "success" in it
+    const isCheckoutSuccessPage = isLemonSqueezyDomain && 
+                                   (currentUrl.includes('/checkout') || 
+                                    currentUrl.includes('/my-orders'));
+
     // Check if current page is a success page
-    const isSuccessPage = successPatterns.some(pattern => pattern.test(currentUrl));
+    const isSuccessPage = successPatterns.some(pattern => pattern.test(currentUrl)) || 
+                         isCheckoutSuccessPage;
     
     if (isSuccessPage) {
         // Try to extract product ID from URL parameters or referrer
         const urlParams = new URLSearchParams(window.location.search);
-        const productId = urlParams.get('product_id') || 
-                         urlParams.get('variant_id') ||
-                         urlParams.get('checkout[product_id]') ||
-                         urlParams.get('checkout[variant_id]') ||
-                         extractProductIdFromUrl(document.referrer) ||
-                         extractProductIdFromUrl(currentUrl);
+        let productId = urlParams.get('product_id') || 
+                       urlParams.get('variant_id') ||
+                       urlParams.get('checkout[product_id]') ||
+                       urlParams.get('checkout[variant_id]') ||
+                       extractProductIdFromUrl(document.referrer) ||
+                       extractProductIdFromUrl(currentUrl);
+        
+        // If we can't find product ID in URL, try sessionStorage
+        if (!productId) {
+            try {
+                const storedTimestamp = sessionStorage.getItem('ls_product_timestamp');
+                const storedProductId = sessionStorage.getItem('ls_product_id');
+                
+                if (storedTimestamp && storedProductId) {
+                    const age = Date.now() - parseInt(storedTimestamp);
+                    if (age < 3600000) { // 1 hour
+                        productId = storedProductId;
+                    }
+                }
+            } catch (e) {
+                // Ignore errors
+            }
+        }
         
         if (productId) {
             const orderId = urlParams.get('order_id') || 
@@ -227,6 +255,16 @@ function detectLemonSqueezyPurchase() {
                            urlParams.get('checkout[order_id]');
             trackPurchase(productId, orderId);
             purchaseTracked = true;
+            
+            // Clean up stored data
+            try {
+                sessionStorage.removeItem('ls_product_id');
+                sessionStorage.removeItem('ls_product_name');
+                sessionStorage.removeItem('ls_product_timestamp');
+            } catch (e) {
+                // Ignore cleanup errors
+            }
+            
             return true;
         }
     }
@@ -280,10 +318,101 @@ function detectLemonSqueezyPurchase() {
         }
     }
 
-    // Method 4: Monitor for Lemon Squeezy iframe completion
+    // Method 4: DOM-based detection for success indicators
+    // Check for success text/content on Lemon Squeezy pages
+    const checkLemonSqueezySuccessContent = () => {
+        if (purchaseTracked) return false;
+
+        const hostname = window.location.hostname.toLowerCase();
+        const isLemonSqueezyDomain = hostname.includes('lemonsqueezy.com');
+        
+        if (!isLemonSqueezyDomain) return false;
+
+        // Look for success text in page content
+        const pageText = document.body?.innerText?.toLowerCase() || '';
+        const successTexts = [
+            'thanks for your order',
+            'thank you for your order',
+            'payment was successful',
+            'order is complete',
+            'order complete',
+            'status: paid',
+            'order #',
+            'view order'
+        ];
+
+        const hasSuccessText = successTexts.some(text => pageText.includes(text));
+
+        if (hasSuccessText) {
+            // Try to extract product ID from various sources
+            let productId = extractProductIdFromUrl(window.location.href) ||
+                           extractProductIdFromUrl(document.referrer) ||
+                           extractProductIdFromUrl(window.location.search);
+            
+            // If we can't find product ID in URL, try to get it from sessionStorage
+            // (stored when user clicked buy button)
+            if (!productId) {
+                try {
+                    const storedTimestamp = sessionStorage.getItem('ls_product_timestamp');
+                    const storedProductId = sessionStorage.getItem('ls_product_id');
+                    
+                    // Only use stored product ID if it's less than 1 hour old
+                    if (storedTimestamp && storedProductId) {
+                        const age = Date.now() - parseInt(storedTimestamp);
+                        if (age < 3600000) { // 1 hour in milliseconds
+                            productId = storedProductId;
+                        } else {
+                            // Clean up expired data
+                            sessionStorage.removeItem('ls_product_id');
+                            sessionStorage.removeItem('ls_product_name');
+                            sessionStorage.removeItem('ls_product_timestamp');
+                        }
+                    }
+                } catch (e) {
+                    console.log('Could not read product ID from sessionStorage:', e);
+                }
+            }
+            
+            // Also check for order number in URL or page content
+            const orderMatch = window.location.pathname.match(/my-orders\/([a-f0-9-]+)/i) ||
+                              pageText.match(/order\s*#?\s*(\d+)/i);
+            const orderId = orderMatch ? orderMatch[1] : null;
+
+            if (productId && !purchaseTracked) {
+                trackPurchase(productId, orderId);
+                purchaseTracked = true;
+                
+                // Clean up stored product ID after successful tracking
+                try {
+                    sessionStorage.removeItem('ls_product_id');
+                    sessionStorage.removeItem('ls_product_name');
+                    sessionStorage.removeItem('ls_product_timestamp');
+                } catch (e) {
+                    // Ignore cleanup errors
+                }
+                
+                return true;
+            }
+        }
+
+        return false;
+    };
+
+    // Check immediately
+    if (checkLemonSqueezySuccessContent()) {
+        return true;
+    }
+
+    // Method 5: Monitor for Lemon Squeezy iframe completion and DOM changes
     // Check if Lemon Squeezy checkout modal/iframe exists
     const checkLemonSqueezyCheckout = setInterval(() => {
         if (purchaseTracked) {
+            clearInterval(checkLemonSqueezyCheckout);
+            return;
+        }
+
+        // Check for success content
+        if (checkLemonSqueezySuccessContent()) {
             clearInterval(checkLemonSqueezyCheckout);
             return;
         }
@@ -345,6 +474,17 @@ function initializeButtonTracking() {
                 
                 // Also track as Lead (showing purchase intent)
                 trackLead(productId);
+                
+                // Store product ID for purchase tracking on Lemon Squeezy success page
+                // This helps us track purchases even when we can't extract product ID from URL
+                try {
+                    sessionStorage.setItem('ls_product_id', productId);
+                    sessionStorage.setItem('ls_product_name', productName);
+                    // Store timestamp to expire after 1 hour
+                    sessionStorage.setItem('ls_product_timestamp', Date.now().toString());
+                } catch (e) {
+                    console.log('Could not store product ID in sessionStorage:', e);
+                }
             }
         });
     });
