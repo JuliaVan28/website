@@ -12,21 +12,21 @@
 const PRODUCTS = {
     '4fa282f9-869b-4246-99c0-1398396274ec': {
         name: 'Ultimate Pregnancy Kit Bundle',
-        value: 34.99,
+        value: 19.99,
         content_id: 'bundle',
         content_name: 'Ultimate Pregnancy Kit Bundle',
         content_category: 'Bundle'
     },
     '964ae0b7-b9e7-4034-8b7d-369c1cceadea': {
         name: 'Ultimate Pregnancy Planner',
-        value: 24.99,
+        value: 14.99,
         content_id: 'planner',
         content_name: 'Ultimate Pregnancy Planner',
         content_category: 'Planner'
     },
     '6f6b3354-ac9a-490e-8d19-4d6e98182585': {
         name: 'Pregnancy Made Simple eBook',
-        value: 19.99,
+        value: 9.99,
         content_id: 'ebook',
         content_name: 'Pregnancy Made Simple eBook',
         content_category: 'eBook'
@@ -498,6 +498,80 @@ function initializeButtonTracking() {
 }
 
 /**
+ * Track scroll depth as custom event
+ * Tracks user engagement by monitoring how far users scroll down the page
+ */
+function initializeScrollDepthTracking() {
+    if (typeof fbq === 'undefined') return;
+
+    const scrollMilestones = [25, 50, 75, 100]; // Percentage milestones
+    const trackedMilestones = new Set(); // Track which milestones have been fired
+    let maxScroll = 0; // Track maximum scroll depth reached
+
+    const trackScrollDepth = () => {
+        const windowHeight = window.innerHeight;
+        const documentHeight = document.documentElement.scrollHeight;
+        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+        
+        // Calculate scroll percentage
+        const scrollableHeight = documentHeight - windowHeight;
+        const scrollPercentage = scrollableHeight > 0 
+            ? Math.round((scrollTop / scrollableHeight) * 100) 
+            : 0;
+
+        // Update max scroll
+        maxScroll = Math.max(maxScroll, scrollPercentage);
+
+        // Track milestones
+        scrollMilestones.forEach(milestone => {
+            if (scrollPercentage >= milestone && !trackedMilestones.has(milestone)) {
+                trackedMilestones.add(milestone);
+                
+                const params = {
+                    content_name: `Scroll Depth ${milestone}%`,
+                    scroll_depth: milestone,
+                    scroll_percentage: scrollPercentage,
+                    page_url: window.location.href,
+                    page_path: window.location.pathname
+                };
+
+                // Track as custom event
+                fbq('trackCustom', 'ScrollDepth', params);
+                console.log(`Facebook Pixel: Scroll Depth ${milestone}% tracked`, params);
+            }
+        });
+    };
+
+    // Throttle scroll events for better performance
+    let scrollTimeout;
+    const handleScroll = () => {
+        if (scrollTimeout) {
+            clearTimeout(scrollTimeout);
+        }
+        scrollTimeout = setTimeout(trackScrollDepth, 100);
+    };
+
+    // Listen for scroll events
+    window.addEventListener('scroll', handleScroll, { passive: true });
+
+    // Track initial scroll position
+    trackScrollDepth();
+
+    // Track on page unload (final scroll depth)
+    window.addEventListener('beforeunload', () => {
+        if (maxScroll > 0 && typeof fbq !== 'undefined') {
+            const params = {
+                content_name: 'Max Scroll Depth',
+                max_scroll_depth: maxScroll,
+                page_url: window.location.href,
+                page_path: window.location.pathname
+            };
+            fbq('trackCustom', 'MaxScrollDepth', params);
+        }
+    });
+}
+
+/**
  * Initialize all tracking
  */
 function initializeFacebookPixelTracking() {
@@ -513,6 +587,9 @@ function initializeFacebookPixelTracking() {
 
     // Detect purchase completion
     detectLemonSqueezyPurchase();
+
+    // Initialize scroll depth tracking
+    initializeScrollDepthTracking();
 
     console.log('Facebook Pixel tracking initialized');
 }
